@@ -1,43 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nepal - Home</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <nav>
-        <ul>
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="geography.html">Geography</a></li>
-            <li><a href="culture.html">Culture</a></li>
-            <li><a href="history.html">History</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@900&family=Nunito:wght@700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #ff90e8;
+        --card: #ffffff;
+        --accent: #33d4ff;
+        --border: #000000;
+        --thick: 4px;
+        --success: #a3e635;
+      }
 
-    <div class="container">
-        <h1>Welcome to Nepal</h1>
-        <p class="intro">Discover the land of the Himalayas, rich culture, and ancient history.</p>
-        
-        <div class="section">
-            <h2>About Nepal</h2>
-            <p>Nepal, officially known as the Federal Democratic Republic of Nepal, is a landlocked country in South Asia. It is located mainly in the Himalayas, but also includes parts of the Indo-Gangetic Plain. Nepal is bordered by China to the north and India to the south, east, and west.</p>
-            
-            <p>Known as the birthplace of Lord Buddha and home to Mount Everest, the world's highest peak, Nepal is a country of incredible diversity. From the towering peaks of the Himalayas to the lush valleys and plains, Nepal offers a unique blend of natural beauty, cultural heritage, and spiritual significance.</p>
-            
-            <p>With a population of approximately 30 million people, Nepal is home to multiple ethnic groups, languages, and religions, making it a truly multicultural nation. The country's capital and largest city is Kathmandu, which serves as the political, cultural, and economic center of Nepal.</p>
+      * { box-sizing: border-box; }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background-color: var(--bg);
+        background-image: radial-gradient(var(--border) 2px, transparent 2px);
+        background-size: 30px 30px;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 40px 20px;
+      }
+
+      .profile-card {
+        background-color: var(--card);
+        border: var(--thick) solid var(--border);
+        box-shadow: 16px 16px 0px var(--border);
+        width: 100%;
+        max-width: 650px;
+        padding: 2.5rem;
+      }
+
+      h2 {
+        font-family: 'Public Sans', sans-serif;
+        font-size: 1.8rem;
+        margin: 0 0 2rem 0;
+        background: var(--accent);
+        border: var(--thick) solid var(--border);
+        display: inline-block;
+        padding: 0.5rem 1.2rem;
+        transform: rotate(-1.5deg);
+        box-shadow: 6px 6px 0px var(--border);
+        text-transform: uppercase;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem; /* Increased gap slightly for the permanent labels */
+      }
+
+      @media (min-width: 600px) {
+        .grid-2 {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+        }
+      }
+
+      .input-group { position: relative; }
+
+      .input-group input, 
+      .input-group select, 
+      .input-group textarea {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+        font-family: inherit;
+        font-weight: 800;
+        border: var(--thick) solid var(--border);
+        background: white;
+        outline: none;
+        border-radius: 0;
+        transition: 0.1s;
+      }
+
+      /* --- SELECT BOX STYLING --- */
+      .input-group select {
+        appearance: none;
+        cursor: pointer;
+        /* Thick modern SVG Arrow encoded here */
+        background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9L12 15L18 9' stroke='black' stroke-width='4' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 20px;
+        color: #000;
+      }
+
+      /* --- LABEL LOGIC --- */
+      .input-group label {
+        position: absolute;
+        left: 12px;
+        top: 15px; /* Default position for text inputs */
+        padding: 0 8px;
+        background: white;
+        font-weight: 900;
+        pointer-events: none;
+        transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid transparent;
+      }
+
+      /* 1. Logic for Standard Text Inputs (Float on focus or valid) */
+      .input-group input:not([type="date"]):focus ~ label,
+      .input-group input:not([type="date"]):not(:placeholder-shown) ~ label,
+      .input-group textarea:focus ~ label,
+      .input-group textarea:not(:placeholder-shown) ~ label {
+        top: -14px;
+        left: 10px;
+        font-size: 0.85rem;
+        border: var(--thick) solid var(--border);
+        background: var(--success);
+        transform: rotate(-2deg);
+        z-index: 10;
+      }
+
+      /* 2. Logic for DATE and SELECT (ALWAYS FLOATED) 
+         This fixes the overlapping bugs. These labels always stay up. */
+      .input-group input[type="date"] ~ label,
+      .input-group select ~ label {
+        top: -14px;
+        left: 10px;
+        font-size: 0.85rem;
+        border: var(--thick) solid var(--border);
+        background: var(--bg); /* Pink background to stand out */
+        transform: rotate(-2deg);
+        z-index: 10;
+        color: black;
+      }
+
+      /* Focus states */
+      .input-group input:focus,
+      .input-group select:focus,
+      .input-group textarea:focus {
+        box-shadow: 4px 4px 0px var(--border);
+        transform: translate(-2px, -2px);
+        background-color: #fffdf0;
+      }
+
+      .section-label {
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .radio-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px;
+        border: var(--thick) solid var(--border);
+        background: #f0f0f0;
+      }
+
+      .radio-item {
+        background: white;
+        padding: 8px 15px;
+        border: 2px solid var(--border);
+        cursor: pointer;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+      }
+
+      .radio-item:hover {
+        background: var(--success);
+      }
+      
+      .radio-item:has(input:checked) {
+        background: var(--accent);
+        box-shadow: 4px 4px 0px var(--border);
+        transform: translate(-2px, -2px);
+      }
+
+      .radio-item input { margin-right: 8px; accent-color: black; }
+
+      .btn {
+        background: var(--success);
+        border: var(--thick) solid var(--border);
+        padding: 1.2rem;
+        font-family: 'Public Sans', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: 8px 8px 0px var(--border);
+        transition: 0.1s;
+      }
+
+      .btn:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 12px 12px 0px var(--border);
+      }
+
+      .btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px var(--border);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-card">
+      <header>
+        <h2>PERSONAL DETAILS</h2>
+      </header>
+
+      <form id="profileForm">
+        <div class="grid-2">
+          <div class="input-group">
+            <input type="text" id="fname" placeholder=" " required />
+            <label for="fname">FIRST NAME</label>
+          </div>
+          <div class="input-group">
+            <input type="text" id="lname" placeholder=" " required />
+            <label for="lname">LAST NAME</label>
+          </div>
         </div>
-        
-        <div class="section">
-            <h2>Why Visit Nepal?</h2>
-            <p>Nepal offers something for everyone - from adventure seekers looking to trek in the Himalayas, to spiritual travelers seeking enlightenment in ancient temples and monasteries, to culture enthusiasts wanting to experience vibrant festivals and traditions. The warmth and hospitality of the Nepali people make every visit memorable.</p>
+
+        <div class="grid-2">
+          <div class="input-group">
+            <input type="email" id="email" placeholder=" " required />
+            <label for="email">EMAIL ADDRESS</label>
+          </div>
+          <div class="input-group">
+            <input type="tel" id="phone" placeholder=" " required />
+            <label for="phone">PHONE NUMBER</label>
+          </div>
         </div>
+
+        <div class="grid-2">
+          <div class="input-group">
+            <input type="date" id="dob" required />
+            <label for="dob">DATE OF BIRTH</label>
+          </div>
+          
+          <div class="input-group">
+            <select id="continent" required>
+              <option value="" disabled selected>SELECT CONTINENT</option>
+              <option value="asia">ASIA</option>
+              <option value="africa">AFRICA</option>
+              <option value="europe">EUROPE</option>
+              <option value="north-america">NORTH AMERICA</option>
+              <option value="south-america">SOUTH AMERICA</option>
+              <option value="australia">AUSTRALIA</option>
+              <option value="antarctica">ANTARCTICA</option>
+            </select>
+            <label for="continent">CONTINENT</label>
+          </div>
+        </div>
+
+        <div class="radio-section">
+          <span class="section-label">GENDER</span>
+          <div class="radio-container">
+            <label class="radio-item"><input type="radio" name="gender" value="m"> MALE</label>
+            <label class="radio-item"><input type="radio" name="gender" value="f"> FEMALE</label>
+            <label class="radio-item"><input type="radio" name="gender" value="o"> OTHER</label>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <textarea id="bio" rows="3" placeholder=" " required></textarea>
+          <label for="bio">DESCRIPTION ABOUT YOU</label>
+        </div>
+
+        <button type="submit" class="btn">SAVE PROFILE DATA</button>
+      </form>
     </div>
-
-    <footer>
-        <p>Made by Abhishek</p>
-    </footer>
-</body>
+  </body>
 </html>
